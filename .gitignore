@@ -1,0 +1,10 @@
+# IDE
+/.idea/
+
+# Testing
+phpunit.xml
+
+# package management
+composer.lock
+/vendor/
+
