@@ -10,17 +10,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-class CreateClass extends Command
+class CreateInterface extends Command
 {
 
-    protected static $defaultName = 'create:class';
-    /**
-     * @var ClassFilenameBuilder
-     */
+    protected static $defaultName = 'create:interface';
     private $classFilenameBuilder;
-    /**
-     * @var Filesystem
-     */
     private $filesystem;
 
     private $classTemplate = <<<PHP
@@ -33,9 +27,7 @@ PHP;
     {
         $this->classFilenameBuilder = $classFilenameBuilder ?: new ClassFilenameBuilder();
         $this->filesystem = $filesystem ?: new Filesystem();
-
         parent::__construct(self::$defaultName);
-
         $this->addArgument('className', InputArgument::REQUIRED);
     }
 
@@ -46,7 +38,7 @@ PHP;
         $namespaceParts = explode('\\', $className);
         $shortClassName = array_pop($namespaceParts);
         $namespace = new PhpNamespace(join('\\', $namespaceParts));
-        $namespace->addClass($shortClassName);
+        $namespace->addInterface($shortClassName);
 
         $fileContent = sprintf($this->classTemplate, $namespace->__toString());
         $this->filesystem->dumpFile($filename, $fileContent);
