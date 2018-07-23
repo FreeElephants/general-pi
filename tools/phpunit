@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+test -t 1 && USE_TTY="--tty"
+
+docker run --rm --interactive ${USE_TTY} \
+    --user $UID:$UID \
+    --volume $PWD:/general \
+    free-elephants/general-dev phpdbg -qrr  vendor/bin/phpunit $@

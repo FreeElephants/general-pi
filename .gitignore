@@ -3,6 +3,7 @@
 
 # Testing
 phpunit.xml
+/_coverage/
 
 # package management
 composer.lock
