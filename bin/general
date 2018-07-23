@@ -2,6 +2,7 @@
 <?php
 
 use FreeElephants\GeneralPi\Cli\Command\CreateClass;
+use FreeElephants\GeneralPi\Cli\Command\CreateInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -22,10 +23,11 @@ if (empty($autoloadDetected)) {
 }
 
 $app = new Application();
-$command = new CreateClass();
-$app->add($command);
+$app->add(new CreateClass());
+$app->add(new CreateInterface());
 $input = new ArgvInput();
 $output = new ConsoleOutput();
+
 try {
     $app->run($input, $output);
 } catch (Throwable $e) {
