@@ -10,26 +10,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-class CreateInterface extends Command
+class CreateInterface extends AbstractCreateCommand
 {
 
     protected static $defaultName = 'create:interface';
-    private $classFilenameBuilder;
-    private $filesystem;
-
-    private $classTemplate = <<<PHP
-<?php
-
-%s
-PHP;
-
-    public function __construct(ClassFilenameBuilder $classFilenameBuilder = null, Filesystem $filesystem = null)
-    {
-        $this->classFilenameBuilder = $classFilenameBuilder ?: new ClassFilenameBuilder();
-        $this->filesystem = $filesystem ?: new Filesystem();
-        parent::__construct(self::$defaultName);
-        $this->addArgument('className', InputArgument::REQUIRED);
-    }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
