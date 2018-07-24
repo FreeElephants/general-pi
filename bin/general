@@ -3,6 +3,7 @@
 
 use FreeElephants\GeneralPi\Cli\Command\CreateClass;
 use FreeElephants\GeneralPi\Cli\Command\CreateInterface;
+use FreeElephants\GeneralPi\Cli\Command\ImplementClass;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -25,6 +26,7 @@ if (empty($autoloadDetected)) {
 $app = new Application();
 $app->add(new CreateClass());
 $app->add(new CreateInterface());
+$app->add(new ImplementClass());
 $input = new ArgvInput();
 $output = new ConsoleOutput();
 
