@@ -22,7 +22,6 @@ class CreateClass extends AbstractCreateCommand
 		$class = $namespace->addClass($shortClassName);
 		$class->addComment(self::GENERATED_BY_COMMENT);
 
-		$fileContent = sprintf($this->classTemplate, $namespace->__toString());
-		$this->filesystem->dumpFile($filename, $fileContent);
+		$this->dump($namespace, $filename);
 	}
 }

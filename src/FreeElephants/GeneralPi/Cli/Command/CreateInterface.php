@@ -2,30 +2,25 @@
 
 namespace FreeElephants\GeneralPi\Cli\Command;
 
-use FreeElephants\GeneralPi\Autoload\Composer\ClassFilenameBuilder;
 use Nette\PhpGenerator\PhpNamespace;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\Filesystem;
 
 class CreateInterface extends AbstractCreateCommand
 {
 
-    protected static $defaultName = 'create:interface';
+	protected static $defaultName = 'create:interface';
 
-    public function execute(InputInterface $input, OutputInterface $output)
-    {
-        $className = $input->getArgument('className');
-        $filename = $this->classFilenameBuilder->buildFilename($className);
-        $namespaceParts = explode('\\', $className);
-        $shortClassName = array_pop($namespaceParts);
-        $namespace = new PhpNamespace(join('\\', $namespaceParts));
-        $class = $namespace->addInterface($shortClassName);
-        $class->addComment(self::GENERATED_BY_COMMENT);
+	public function execute(InputInterface $input, OutputInterface $output)
+	{
+		$className = $input->getArgument('className');
+		$filename = $this->classFilenameBuilder->buildFilename($className);
+		$namespaceParts = explode('\\', $className);
+		$shortClassName = array_pop($namespaceParts);
+		$namespace = new PhpNamespace(join('\\', $namespaceParts));
+		$class = $namespace->addInterface($shortClassName);
+		$class->addComment(self::GENERATED_BY_COMMENT);
 
-        $fileContent = sprintf($this->classTemplate, $namespace->__toString());
-        $this->filesystem->dumpFile($filename, $fileContent);
-    }
+		$this->dump($namespace, $filename);
+	}
 }

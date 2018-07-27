@@ -56,10 +56,7 @@ class ImplementClass extends AbstractCreateCommand
 
         }
 
-        $classContent = Helpers::tabsToSpaces($namespace->__toString(), 4);
-        $fileContent = sprintf($this->classTemplate, $classContent);
-
-        $this->filesystem->dumpFile($implementationFilename, $fileContent);
+        $this->dump($namespace, $implementationFilename);
     }
 
 }
