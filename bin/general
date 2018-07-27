@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
 
+use FreeElephants\GeneralPi\Cli\Command\CreateAbstract;
 use FreeElephants\GeneralPi\Cli\Command\CreateClass;
 use FreeElephants\GeneralPi\Cli\Command\CreateInterface;
 use FreeElephants\GeneralPi\Cli\Command\ImplementClass;
@@ -9,31 +10,34 @@ use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 $autoloads = [
-    __DIR__ . '/../vendor/autoload.php',
-    __DIR__ . '/../../../autoload.php',
+	__DIR__ . '/../vendor/autoload.php',
+	__DIR__ . '/../../../autoload.php',
 ];
 foreach ($autoloads as $autoload) {
-    if (file_exists($autoload)) {
-        require_once $autoload;
-        $autoloadDetected = true;
-    }
+	if (file_exists($autoload)) {
+		require_once $autoload;
+		$autoloadDetected = true;
+	}
 }
 
 if (empty($autoloadDetected)) {
-    throw new RuntimeException('Can not detect autoload.');
+	throw new RuntimeException('Can not detect autoload.');
 }
 
 $app = new Application();
+$app->add(new CreateAbstract());
 $app->add(new CreateClass());
 $app->add(new CreateInterface());
+
 $app->add(new ImplementClass());
+
 $input = new ArgvInput();
 $output = new ConsoleOutput();
 
 try {
-    $app->run($input, $output);
+	$app->run($input, $output);
 } catch (Throwable $e) {
-    $message = sprintf('<error>%s</error>', $e->getMessage());
-    $output->writeln($message);
-    exit(1);
+	$message = sprintf('<error>%s</error>', $e->getMessage());
+	$output->writeln($message);
+	exit(1);
 }
