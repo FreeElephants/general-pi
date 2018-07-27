@@ -16,7 +16,7 @@ class ImplementClass extends AbstractCreateCommand
 
     protected static $defaultName = 'implement:class';
 
-    public function __construct(ClassFilenameBuilder $classFilenameBuilder = null, Filesystem $filesystem = null)
+	public function __construct(ClassFilenameBuilder $classFilenameBuilder = null, Filesystem $filesystem = null)
     {
         parent::__construct($classFilenameBuilder, $filesystem);
         $this->addArgument('implementationClassName', InputArgument::REQUIRED);
@@ -34,6 +34,7 @@ class ImplementClass extends AbstractCreateCommand
         $implementationClass = $namespace->addClass($shortClassName);
 
         $implementationClass->addImplement($interfaceName);
+        $implementationClass->addComment(self::GENERATED_BY_COMMENT);
         $interfaceReflection = new \ReflectionClass($interfaceName);
         $interfaceMethods = $interfaceReflection->getMethods();
         foreach ($interfaceMethods as $methodReflection) {

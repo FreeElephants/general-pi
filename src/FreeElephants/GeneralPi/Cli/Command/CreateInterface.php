@@ -22,7 +22,8 @@ class CreateInterface extends AbstractCreateCommand
         $namespaceParts = explode('\\', $className);
         $shortClassName = array_pop($namespaceParts);
         $namespace = new PhpNamespace(join('\\', $namespaceParts));
-        $namespace->addInterface($shortClassName);
+        $class = $namespace->addInterface($shortClassName);
+        $class->addComment(self::GENERATED_BY_COMMENT);
 
         $fileContent = sprintf($this->classTemplate, $namespace->__toString());
         $this->filesystem->dumpFile($filename, $fileContent);
