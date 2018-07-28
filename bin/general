@@ -39,5 +39,9 @@ try {
 } catch (Throwable $e) {
 	$message = sprintf('<error>%s</error>', $e->getMessage());
 	$output->writeln($message);
+	$code = $e->getCode();
+	if ($code > 0 && $code < 255) {
+		exit($code);
+	}
 	exit(1);
 }

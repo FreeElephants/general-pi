@@ -17,10 +17,11 @@ Target version: 1.0.0
 - `implement:class [options] className implementationClassName`
 
 #### Options for Create and Implement Groups: 
-* --check-class-exists  Check, that all usages classes available with autoload. 
+* --check-class-exists|-c  Check, that all usages classes available with autoload. 
 * --default-path|-d     Path to generated files, when autoloader can't suggest anything for this namespace.  
 * --parents|-p          List of parent classes (and interfaces).
-* --overwrite|-o        Overwrite existing file on collision. 
+* --overwrite|-w        Overwrite existing file on collision. 
+* --output|-o           Target file or stream.
 
 ### API
 #### Generator 
