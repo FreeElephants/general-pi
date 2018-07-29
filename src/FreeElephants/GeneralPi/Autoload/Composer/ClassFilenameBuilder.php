@@ -4,68 +4,70 @@ namespace FreeElephants\GeneralPi\Autoload\Composer;
 
 use Composer\Factory;
 use Composer\IO\NullIO;
+use FreeElephants\GeneralPi\Autoload\ClassFilenameBuilderInterface;
 
-class ClassFilenameBuilder
+class ClassFilenameBuilder implements ClassFilenameBuilderInterface
 {
 
-    /**
-     * @var string
-     */
-    private $defaultSourcePath;
+	/**
+	 * @var string
+	 */
+	private $defaultSourcePath;
 
-    private $useDevAutoload = true;
+	private $useDevAutoload = true;
 
-    public function __construct(string $defaultSourcePath = 'src')
-    {
-        $this->defaultSourcePath = $defaultSourcePath;
-    }
+	private const DS = DIRECTORY_SEPARATOR;
 
-    public function buildFilename($className): string
-    {
-        $composer = Factory::create(new NullIO());
-        $rootPackage = $composer->getPackage();
-        $devAutoload = $rootPackage->getDevAutoload();
+	public function __construct(string $defaultSourcePath = 'src', bool $useDevAutoload = true)
+	{
+		$this->defaultSourcePath = $defaultSourcePath;
+		$this->useDevAutoload = $useDevAutoload;
+	}
 
-        $autoloads = $rootPackage->getAutoload();
+	public function buildFilename(string $className): string
+	{
+		$composer = Factory::create(new NullIO());
+		$rootPackage = $composer->getPackage();
 
-        $namespaceParts = explode('\\', $className);
-        $nsPattern = '';
-        foreach ($namespaceParts as $position => $part) {
-            $nsPattern .= $part . '\\';
-            foreach ($autoloads['psr-4'] as $ns => $paths) {
-                if (strpos($ns, $nsPattern) === 0) {
-                    $shortClassName = array_pop($namespaceParts);
+		$autoloads = $rootPackage->getAutoload();
 
-                    $composerEntry = $paths[0];
-                    $basename = $shortClassName . '.php';
-                    $pieces = array_slice($namespaceParts, $position + 2);
-                    return $this->normalizePath($composerEntry . DIRECTORY_SEPARATOR . $this->joinToPath($pieces) . DIRECTORY_SEPARATOR . $basename);
-                }
-            }
+		$namespaceParts = explode('\\', $className);
+		$nsPattern = '';
+		foreach ($namespaceParts as $position => $part) {
+			$nsPattern .= $part . '\\';
+			foreach ($autoloads['psr-4'] as $ns => $paths) {
+				if (strpos($ns, $nsPattern) === 0) {
+					$shortClassName = array_pop($namespaceParts);
 
-            if ($this->useDevAutoload) {
-                foreach ($devAutoload['psr-4'] as $ns => $paths) {
-                    if (strpos($ns, $nsPattern) === 0) {
-                        $basename = array_pop($namespaceParts) . '.php';
-                        $pieces = array_slice($namespaceParts, $position + 1);
-                        return $paths[0] . $this->joinToPath($pieces) . '/' . $basename;
-                    }
-                }
-            }
+					$composerEntry = $paths[0];
+					$basename = $shortClassName . '.php';
+					$pieces = array_slice($namespaceParts, $position + 2);
+					return $this->normalizePath($composerEntry . self::DS . $this->joinToPath($pieces) . self::DS . $basename);
+				}
+			}
 
+			if ($this->useDevAutoload) {
+				$devAutoload = $rootPackage->getDevAutoload();
+				foreach ($devAutoload['psr-4'] as $ns => $paths) {
+					if (strpos($ns, $nsPattern) === 0) {
+						$basename = array_pop($namespaceParts) . '.php';
+						$pieces = array_slice($namespaceParts, $position + 1);
+						return $paths[0] . $this->joinToPath($pieces) . '/' . $basename;
+					}
+				}
+			}
+		}
 
-        }
+		return $this->defaultSourcePath . self::DS . $this->joinToPath($namespaceParts) . '.php';
+	}
 
-        return $this->defaultSourcePath . DIRECTORY_SEPARATOR . $this->joinToPath($namespaceParts) . '.php';
-    }
+	private function joinToPath(iterable $namespaceParts): string
+	{
+		return join(self::DS, $namespaceParts);
+	}
 
-    private function joinToPath(iterable $namespaceParts): string
-    {
-        return join(DIRECTORY_SEPARATOR, $namespaceParts);
-    }
-
-    private function normalizePath($string): string
-    {
-        return str_replace(DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR, $string);
-    }
+	private function normalizePath($string): string
+	{
+		return str_replace(self::DS . self::DS, self::DS, $string);
+	}
 }

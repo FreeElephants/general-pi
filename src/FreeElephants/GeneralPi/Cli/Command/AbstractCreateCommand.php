@@ -2,6 +2,7 @@
 
 namespace FreeElephants\GeneralPi\Cli\Command;
 
+use FreeElephants\GeneralPi\Autoload\ClassFilenameBuilderInterface;
 use FreeElephants\GeneralPi\Autoload\Composer\ClassFilenameBuilder;
 use FreeElephants\GeneralPi\GeneratorInterface;
 use FreeElephants\GeneralPi\Nette\Generator;
@@ -28,7 +29,7 @@ PHP;
 
 	public function __construct(
 		GeneratorInterface $generator = null,
-		ClassFilenameBuilder $classFilenameBuilder = null,
+		ClassFilenameBuilderInterface $classFilenameBuilder = null,
 		Filesystem $filesystem = null
 	) {
 		$this->classFilenameBuilder = $classFilenameBuilder ?: new ClassFilenameBuilder();
