@@ -56,5 +56,6 @@ class ClassFilenameBuilderTest extends TestCase
 
         $this->assertSame('src/SomePackageName/Foo/Bar/Baz.php', $filename);
     }
+
 }
 

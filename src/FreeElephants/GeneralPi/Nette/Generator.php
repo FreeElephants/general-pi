@@ -20,7 +20,7 @@ class Generator implements GeneratorInterface
 
 		$class = $namespace->addClass($shortClassName);
 		$class->addComment(self::GENERATED_BY_COMMENT);
-		
+
 		return new ClassContainer($namespace);
 	}
 
