@@ -2,8 +2,6 @@
 
 namespace FreeElephants\GeneralPi\Cli\Command;
 
-use FreeElephants\GeneralPi\Autoload\ClassFilenameBuilderInterface;
-use FreeElephants\GeneralPi\Autoload\Composer\ClassFilenameBuilder;
 use FreeElephants\GeneralPi\GeneratorInterface;
 use FreeElephants\GeneralPi\Nette\Generator;
 use Symfony\Component\Console\Command\Command;
@@ -12,7 +10,6 @@ use Symfony\Component\Filesystem\Filesystem;
 
 abstract class AbstractCreateCommand extends Command
 {
-	protected $classFilenameBuilder;
 
 	protected $filesystem;
 
@@ -29,10 +26,8 @@ PHP;
 
 	public function __construct(
 		GeneratorInterface $generator = null,
-		ClassFilenameBuilderInterface $classFilenameBuilder = null,
 		Filesystem $filesystem = null
 	) {
-		$this->classFilenameBuilder = $classFilenameBuilder ?: new ClassFilenameBuilder();
 		$this->filesystem = $filesystem ?: new Filesystem();
 		$this->generator = $generator ?: new Generator();
 

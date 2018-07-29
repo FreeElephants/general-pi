@@ -13,9 +13,8 @@ class CreateClass extends AbstractCreateCommand
 	public function execute(InputInterface $input, OutputInterface $output)
 	{
 		$className = $input->getArgument('className');
-		$filename = $this->classFilenameBuilder->buildFilename($className);
 		$classContainer = $this->generator->createClass($className);
 
-		$this->dump($classContainer->stringify(), $filename);
+		$this->dump($classContainer->stringify(), $classContainer->getClassFilename());
 	}
 }

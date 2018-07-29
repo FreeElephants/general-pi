@@ -2,6 +2,8 @@
 
 namespace FreeElephants\GeneralPi\Nette;
 
+use FreeElephants\GeneralPi\Autoload\ClassFilenameBuilderInterface;
+use FreeElephants\GeneralPi\Autoload\Composer\ClassFilenameBuilder;
 use FreeElephants\GeneralPi\ClassContainerInterface;
 use FreeElephants\GeneralPi\CreateOptionsInterface;
 use FreeElephants\GeneralPi\GeneratorInterface;
@@ -10,6 +12,17 @@ use Nette\PhpGenerator\PhpNamespace;
 
 class Generator implements GeneratorInterface
 {
+
+	/**
+	 * @var ClassFilenameBuilderInterface
+	 */
+	private $classFilenameBuilder;
+
+	public function __construct(ClassFilenameBuilderInterface $classFilenameBuilder = null)
+	{
+		$this->classFilenameBuilder = $classFilenameBuilder ?: new ClassFilenameBuilder();
+	}
+
 	public function createClass(
 		string $className,
 		CreateOptionsInterface $createOptions = null
@@ -21,7 +34,7 @@ class Generator implements GeneratorInterface
 		$class = $namespace->addClass($shortClassName);
 		$class->addComment(self::GENERATED_BY_COMMENT);
 
-		return new ClassContainer($namespace);
+		return $this->createClassContainer($className, $namespace);
 	}
 
 
@@ -37,7 +50,7 @@ class Generator implements GeneratorInterface
 		$class->setAbstract();
 		$class->addComment(self::GENERATED_BY_COMMENT);
 
-		return new ClassContainer($namespace);
+		return $this->createClassContainer($className, $namespace);
 	}
 
 
@@ -51,7 +64,7 @@ class Generator implements GeneratorInterface
 		$class = $namespace->addInterface($shortClassName);
 		$class->addComment(self::GENERATED_BY_COMMENT);
 
-		return new ClassContainer($namespace);
+		return $this->createClassContainer($className, $namespace);
 	}
 
 
@@ -100,7 +113,7 @@ class Generator implements GeneratorInterface
 			}
 		}
 
-		return new ClassContainer($namespace);
+		return $this->createClassContainer($className, $namespace);
 	}
 
 
@@ -115,5 +128,19 @@ class Generator implements GeneratorInterface
 		string $className,
 		CreateOptionsInterface $createOptions = null
 	): ClassContainerInterface {
+	}
+
+	/**
+	 * @param string $className
+	 * @param $namespace
+	 * @return ClassContainer
+	 */
+	protected function createClassContainer(string $className, PhpNamespace $namespace): ClassContainer
+	{
+		$classContainer = new ClassContainer($namespace);
+		$filename = $this->classFilenameBuilder->buildFilename($className);
+		$classContainer->setClassFilename($filename);
+
+		return $classContainer;
 	}
 }

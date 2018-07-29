@@ -26,6 +26,7 @@ class Bar
 
 PHP;
 		$this->assertSame($expectedContent, $classContainer->stringify());
+		$this->assertSame('tests/Fixtures/Generated/Foo/Bar.php', $classContainer->getClassFilename());
 	}
 
 	public function testCreateClassInRootNamespace()
@@ -44,6 +45,7 @@ class Bar
 
 PHP;
 		$this->assertSame($expectedContent, $classContainer->stringify());
+		$this->assertSame('src/Bar.php', $classContainer->getClassFilename());
 	}
 
 	public function testCreateAbstractWithNamespace()
@@ -64,6 +66,7 @@ abstract class Bar
 
 PHP;
 		$this->assertSame($expectedContent, $classContainer->stringify());
+		$this->assertSame('tests/Fixtures/Generated/Foo/Bar.php', $classContainer->getClassFilename());
 	}
 
 	public function testCreateAbstractInRootNamespace()
@@ -82,6 +85,7 @@ abstract class Bar
 
 PHP;
 		$this->assertSame($expectedContent, $classContainer->stringify());
+		$this->assertSame('src/Bar.php', $classContainer->getClassFilename());
 	}
 
 	public function testCreateInterfaceWithNamespace()
@@ -102,6 +106,7 @@ interface Bar
 
 PHP;
 		$this->assertSame($expectedContent, $classContainer->stringify());
+		$this->assertSame('tests/Fixtures/Generated/Foo/Bar.php', $classContainer->getClassFilename());
 	}
 
 	public function testCreateInterfaceInRootNamespace()
@@ -120,6 +125,7 @@ interface Bar
 
 PHP;
 		$this->assertSame($expectedContent, $classContainer->stringify());
+		$this->assertSame('src/Bar.php', $classContainer->getClassFilename());
 	}
 
 	public function testImplementClassWithNamespace()
@@ -158,6 +164,7 @@ class Bar implements \Fixtures\FooInterface
 PHP;
 
 		$this->assertSame($expectedContent, $classContainer->stringify());
+		$this->assertSame('tests/Fixtures/Generated/Foo/Bar.php', $classContainer->getClassFilename());
 	}
 
 }

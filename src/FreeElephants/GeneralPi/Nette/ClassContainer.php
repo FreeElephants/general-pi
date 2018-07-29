@@ -15,6 +15,7 @@ class ClassContainer implements ClassContainerInterface
 	 * @var PhpNamespace
 	 */
 	private $phpNamespace;
+	private $filename;
 
 	public function __construct(PhpNamespace $phpNamespace)
 	{
@@ -31,5 +32,15 @@ class ClassContainer implements ClassContainerInterface
 	public function __toString(): string
 	{
 		return $this->stringify();
+	}
+
+	public function setClassFilename(string $filename)
+	{
+		$this->filename = $filename;
+	}
+
+	public function getClassFilename(): string
+	{
+		return $this->filename;
 	}
 }

@@ -13,10 +13,9 @@ class CreateInterface extends AbstractCreateCommand
 	public function execute(InputInterface $input, OutputInterface $output)
 	{
 		$className = $input->getArgument('className');
-		$filename = $this->classFilenameBuilder->buildFilename($className);
 
 		$classContainer = $this->generator->createInterface($className);
 
-		$this->dump($classContainer->stringify(), $filename);
+		$this->dump($classContainer->stringify(), $classContainer->getClassFilename());
 	}
 }

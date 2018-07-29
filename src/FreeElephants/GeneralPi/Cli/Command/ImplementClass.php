@@ -2,7 +2,6 @@
 
 namespace FreeElephants\GeneralPi\Cli\Command;
 
-use FreeElephants\GeneralPi\Autoload\ClassFilenameBuilderInterface;
 use FreeElephants\GeneralPi\GeneratorInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,10 +15,9 @@ class ImplementClass extends AbstractCreateCommand
 
 	public function __construct(
 		GeneratorInterface $generator = null,
-		ClassFilenameBuilderInterface $classFilenameBuilder = null,
 		Filesystem $filesystem = null
 	) {
-		parent::__construct($generator, $classFilenameBuilder, $filesystem);
+		parent::__construct($generator, $filesystem);
 		$this->addArgument('implementationClassName', InputArgument::REQUIRED);
 	}
 
@@ -27,11 +25,10 @@ class ImplementClass extends AbstractCreateCommand
 	{
 		$interfaceName = $input->getArgument('className');
 		$implementationClassName = $input->getArgument('implementationClassName');
-		$implementationFilename = $this->classFilenameBuilder->buildFilename($implementationClassName);
 
 		$classContainer = $this->generator->implementClass($implementationClassName, $interfaceName);
 
-		$this->dump($classContainer->stringify(), $implementationFilename);
+		$this->dump($classContainer->stringify(), $classContainer->getClassFilename());
 	}
 
 }
