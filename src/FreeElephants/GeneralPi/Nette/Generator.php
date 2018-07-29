@@ -1,8 +1,10 @@
 <?php
 
-namespace FreeElephants\GeneralPi;
+namespace FreeElephants\GeneralPi\Nette;
 
-use FreeElephants\GeneralPi\Nette\ClassContainer;
+use FreeElephants\GeneralPi\ClassContainerInterface;
+use FreeElephants\GeneralPi\CreateOptionsInterface;
+use FreeElephants\GeneralPi\GeneratorInterface;
 use Nette\PhpGenerator\PhpLiteral;
 use Nette\PhpGenerator\PhpNamespace;
 
@@ -93,10 +95,8 @@ class Generator implements GeneratorInterface
 					} else {
 						$parameter->setDefaultValue($parameterReflection->getDefaultValue());
 					}
-
 				}
 			}
-
 		}
 
 		return new ClassContainer($namespace);

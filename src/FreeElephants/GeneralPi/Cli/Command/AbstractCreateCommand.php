@@ -3,9 +3,8 @@
 namespace FreeElephants\GeneralPi\Cli\Command;
 
 use FreeElephants\GeneralPi\Autoload\Composer\ClassFilenameBuilder;
-use FreeElephants\GeneralPi\Generator;
 use FreeElephants\GeneralPi\GeneratorInterface;
-use Nette\PhpGenerator\Helpers;
+use FreeElephants\GeneralPi\Nette\Generator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Filesystem\Filesystem;

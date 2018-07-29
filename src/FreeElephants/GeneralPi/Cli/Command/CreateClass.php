@@ -2,8 +2,6 @@
 
 namespace FreeElephants\GeneralPi\Cli\Command;
 
-use FreeElephants\GeneralPi\GeneratorInterface;
-use Nette\PhpGenerator\PhpNamespace;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

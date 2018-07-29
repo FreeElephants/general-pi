@@ -2,6 +2,7 @@
 
 namespace FreeElephants\GeneralPi;
 
+use FreeElephants\GeneralPi\Nette\Generator;
 use PHPUnit\Framework\TestCase;
 
 class GeneratorTest extends TestCase

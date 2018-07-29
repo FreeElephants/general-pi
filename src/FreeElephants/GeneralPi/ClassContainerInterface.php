@@ -8,7 +8,7 @@ interface ClassContainerInterface
 	public function stringify(): string;
 
 	/**
-	 * @internal use
+	 * @internal use stringify()
 	 */
 	public function __toString(): string;
 }

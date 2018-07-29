@@ -3,7 +3,7 @@
 namespace FreeElephants\GeneralPi\Cli\Command;
 
 use FreeElephants\GeneralPi\Autoload\Composer\ClassFilenameBuilder;
-use Nette\PhpGenerator\Helpers;
+use FreeElephants\GeneralPi\GeneratorInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -14,9 +14,9 @@ class ImplementClass extends AbstractCreateCommand
 
 	protected static $defaultName = 'implement:class';
 
-	public function __construct(ClassFilenameBuilder $classFilenameBuilder = null, Filesystem $filesystem = null)
+	public function __construct(GeneratorInterface $generator = null, ClassFilenameBuilder $classFilenameBuilder = null, Filesystem $filesystem = null)
 	{
-		parent::__construct($classFilenameBuilder, $filesystem);
+		parent::__construct($generator, $classFilenameBuilder, $filesystem);
 		$this->addArgument('implementationClassName', InputArgument::REQUIRED);
 	}
 
