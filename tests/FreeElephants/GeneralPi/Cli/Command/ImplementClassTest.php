@@ -17,8 +17,8 @@ class ImplementClassTest extends AbstractCreateCommandTest
         $commandTester = new CommandTester($cmd);
         $commandTester->execute([
             'command' => $cmd->getName(),
-            'implementationClassName' => 'Fixtures\\Generated\\Foo\\Bar',
-            'className' => 'Fixtures\\FooInterface'
+            'className' => 'Fixtures\\Generated\\Foo\\Bar',
+            'interfaces' => ['Fixtures\\FooInterface'],
         ]);
 
         $this->assertFileExists($fixtureFilename);

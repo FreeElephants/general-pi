@@ -131,7 +131,7 @@ PHP;
 	public function testImplementClassWithNamespace()
 	{
 		$generator = new Generator();
-		$classContainer = $generator->implementClass('Fixtures\\FooInterface', 'Fixtures\\Generated\\Foo\\Bar');
+		$classContainer = $generator->implementClass('Fixtures\\Generated\\Foo\\Bar', ['Fixtures\\FooInterface']);
 
 		$expectedContent = <<<PHP
 namespace Fixtures\Generated\Foo;

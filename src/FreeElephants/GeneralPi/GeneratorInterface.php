@@ -33,8 +33,8 @@ interface GeneratorInterface
     ): ClassContainerInterface;
 
     public function implementClass(
-		string $interfaceName,
-		string $className,
+        string $className,
+        array $interfaces,
         CreateOptionsInterface $createOptions = null
     ): ClassContainerInterface;
 

@@ -83,35 +83,43 @@ class Generator implements GeneratorInterface
 
 
 	public function implementClass(
-		string $interfaceName,
-		string $className,
+        string $className,
+        array $interfaces,
 		CreateOptionsInterface $createOptions = null
 	): ClassContainerInterface {
 		$namespaceParts = explode('\\', $className);
 		$shortClassName = array_pop($namespaceParts);
 		$namespace = new PhpNamespace(join('\\', $namespaceParts));
 		$implementationClass = $namespace->addClass($shortClassName);
+        $implementationClass->addComment(self::GENERATED_BY_COMMENT);
 
-		$implementationClass->addImplement($interfaceName);
-		$implementationClass->addComment(self::GENERATED_BY_COMMENT);
-		$interfaceReflection = new \ReflectionClass($interfaceName);
-		$interfaceMethods = $interfaceReflection->getMethods();
-		foreach ($interfaceMethods as $methodReflection) {
-			$method = $implementationClass->addMethod($methodReflection->getName())
-				->setReturnType($methodReflection->getReturnType());
-			foreach ($methodReflection->getParameters() as $parameterReflection) {
-				$parameterName = $parameterReflection->getName();
-				$typeHint = $parameterReflection->getType()->getName();
-				$parameter = $method->addParameter($parameterName)->setTypeHint($typeHint);
-				if ($parameterReflection->isDefaultValueAvailable()) {
-					if ($parameterReflection->isDefaultValueConstant()) {
-						$parameter->setDefaultValue(new PhpLiteral($parameterReflection->getDefaultValueConstantName()));
-					} else {
-						$parameter->setDefaultValue($parameterReflection->getDefaultValue());
-					}
-				}
-			}
+        foreach ($interfaces as $interfaceName) {
+            $implementationClass->addImplement($interfaceName);
+
+            $interfaceFilename = $this->classFilenameBuilder->buildFilename($interfaceName);
+            require_once $interfaceFilename;
+
+            $interfaceReflection = new \ReflectionClass($interfaceName);
+            $interfaceMethods = $interfaceReflection->getMethods();
+            foreach ($interfaceMethods as $methodReflection) {
+                $method = $implementationClass->addMethod($methodReflection->getName())
+                    ->setReturnType($methodReflection->getReturnType());
+                foreach ($methodReflection->getParameters() as $parameterReflection) {
+                    $parameterName = $parameterReflection->getName();
+                    $typeHint = $parameterReflection->getType()->getName();
+                    $parameter = $method->addParameter($parameterName)->setTypeHint($typeHint);
+                    if ($parameterReflection->isDefaultValueAvailable()) {
+                        if ($parameterReflection->isDefaultValueConstant()) {
+                            $parameter->setDefaultValue(new PhpLiteral($parameterReflection->getDefaultValueConstantName()));
+                        } else {
+                            $parameter->setDefaultValue($parameterReflection->getDefaultValue());
+                        }
+                    }
+                }
+            }
 		}
+
+
 
 		return $this->createClassContainer($className, $namespace);
 	}
