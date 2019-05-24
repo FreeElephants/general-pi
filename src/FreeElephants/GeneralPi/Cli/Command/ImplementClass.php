@@ -18,7 +18,8 @@ class ImplementClass extends AbstractCreateCommand
 		Filesystem $filesystem = null
 	) {
 		parent::__construct($generator, $filesystem);
-		$this->addArgument('implementationClassName', InputArgument::REQUIRED);
+		$this->addArgument('implementationClassName', InputArgument::REQUIRED | InputArgument::IS_ARRAY);
+
 	}
 
 	public function execute(InputInterface $input, OutputInterface $output)
@@ -26,7 +27,7 @@ class ImplementClass extends AbstractCreateCommand
 		$interfaceName = $input->getArgument('className');
 		$implementationClassName = $input->getArgument('implementationClassName');
 
-		$classContainer = $this->generator->implementClass($implementationClassName, $interfaceName);
+		$classContainer = $this->generator->implementClass($interfaceName, $implementationClassName);
 
 		$this->dump($classContainer->stringify(), $classContainer->getClassFilename());
 	}

@@ -14,7 +14,7 @@ Target version: 1.0.0
 - `extend:class [options] className implementationClassName`
 - `extend:abstract [options] className implementationClassName`
 - `implement:abstract [options] className implementationClassName`
-- `implement:class [options] className implementationClassName`
+- `implement:class [options] interfaceName implementationClassName1 [implementationClassName2]`
 
 #### Options for Create and Implement Groups: 
 * --check-class-exists|-c  Check, that all usages classes available with autoload. 

@@ -83,8 +83,8 @@ class Generator implements GeneratorInterface
 
 
 	public function implementClass(
-		string $className,
 		string $interfaceName,
+		string $className,
 		CreateOptionsInterface $createOptions = null
 	): ClassContainerInterface {
 		$namespaceParts = explode('\\', $className);
